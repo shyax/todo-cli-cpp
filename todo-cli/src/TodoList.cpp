@@ -1,4 +1,4 @@
-#include "TodoList.cpp"
+#include "TodoList.hpp"
 #include <fstream>
 #include <algorithm>
 #include <nlohmann/json.hpp>
@@ -8,7 +8,7 @@ using json = nlohmann::json;
 TodoList::TodoList(std::string path) : path_(std::move(path)) { load(); }
 
 int TodoList::add(const std::string& title) {
-    Task t{ next_id++, title };
+    Task t{ next_id_++, title };
     tasks_.push_back(t);
     save();
     return t.id;
@@ -16,7 +16,7 @@ int TodoList::add(const std::string& title) {
 
 bool TodoList::remove(int id) {
     auto it = std::remove_if(tasks_.begin(), tasks_.end(), [&](const Task& t){ return  t.id == id; });
-    if (it == tasks_.end()) return false();
+    if (it == tasks_.end()) return false;
     tasks_.erase(it, tasks_.end());
     save();
     return true;
@@ -34,7 +34,7 @@ bool TodoList::toggle(int id) {
     return false;
 }
 
-bool TodoList::edit(int id, std::string& new_title) {
+bool TodoList::edit(int id, const std::string& new_title) {
     for (auto &t : tasks_) {
         if (t.id == id)
         {
@@ -52,7 +52,7 @@ std::optional<Task> TodoList::get(int id) const {
     return std::nullopt;
 }
 
-void TodoList::load() const {
+void TodoList::load() {
     std::ifstream f(path_);
     if(!f) return;
     json j; f >> j;
@@ -68,14 +68,13 @@ void TodoList::load() const {
 
 void TodoList::save() const {
     json j;
-    j["tasks"] = json.array();
+    j["tasks"] = json::array();
     for (const auto& t: tasks_ ) {
         j["tasks"].push_back({
-            {"id":t.id},
-            {"title":t.title},
-            {"done":t.done}
-
-        })
+            {"id", t.id},
+            {"title", t.title},
+            {"done", t.done}
+        });
     }
     std::ofstream f(path_);
     f << j.dump(2);

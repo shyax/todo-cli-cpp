@@ -4,13 +4,13 @@
 #include <string_view>
 
 void print_usage() {
-    std::cout
+    std::cout<<
         "todo <command> [args]\n"
-        "  add <title>      Add a new task\n"
-        "  ls               List tasks\n"
-        "  done <id>        Toggle complete\n"
-        "  rm <id>          Remove task\n"
-        "  edit <id> <txt>  Edit task title\n";
+        <<"  add <title>      Add a new task\n"
+        <<"  ls               List tasks\n"
+        <<"  done <id>        Toggle complete\n"
+        <<"  rm <id>          Remove task\n"
+        <<"  edit <id> <txt>  Edit task title\n";
 }
 
 int main(int argc, char* argv[]) {
