@@ -21,5 +21,5 @@ class TodoList {
     private:
         std::string path_;    
         std::vector<Task> tasks_;
-        int next_id = 1;   
+        int next_id_ = 1;   
 };
